@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import AxiosConfig from '../config/axios.config';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react"
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchAllProducts } from "../service/products/actions"
+import { Link } from "react-router-dom"
 
 
 interface Product {
@@ -8,26 +9,22 @@ interface Product {
     _id: string;
 }
 
-const Shop = () => {
-    const [productList, setProductList] = useState<Product[] | []>([])
-    const getProducts = async () => {
-        const response = await AxiosConfig.get('/products')
-        setProductList(response.data)
-    }
+interface ShopPageProps {
+    products: any
+}
 
+const Shop = () => {
+    const productsStore = useSelector((state: any) => state.productsReducer.data)
+    const dispatch = useDispatch()
     useEffect(() => {
-        getProducts()
-        productList.map(product => console.log(product.description))
+        dispatch(fetchAllProducts())
     }, [])
 
-    if (!productList) {
-        return <h3>No products</h3>
-    }
     return (
         <>
             Home
             {
-                productList.map((product: Product) => {
+                productsStore && productsStore.map((product: any) => {
                     return (
                         <Link to={`/product/${product._id}`}>
                             <p>{product.description}</p>
@@ -38,4 +35,4 @@ const Shop = () => {
         </>)
 }
 
-export default Shop
+export default Shop;
