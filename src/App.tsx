@@ -1,13 +1,40 @@
-import './App.css'
+import React from "react";
+import AxiosConfig from './config/axios.config';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
-function App() {
+
+import Shop from "./Pages/Shop"
+import Product from "./Pages/Product"
+
+export default function App() {
+
   return (
-    <div className='App'>
-      <div className='todo'>
-        <h1>Shop</h1>
-      </div>
-    </div>
-  )
-}
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Shop</Link>
+            </li>
+          </ul>
+        </nav>
 
-export default App
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/product/:id">
+            <Product />
+          </Route>
+          <Route path="/">
+            <Shop />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}
