@@ -1,17 +1,21 @@
-import React from "react";
-import { withRouter, RouteComponentProps } from "react-router";
+import React from 'react';
+import { withRouter } from 'react-router';
 
-type ProductDetailParams = {
-    id: string;
-};
+interface ProductDetailParams {
+    match: {
+        params: {
+            id: string;
+        };
+    };
+}
 
-const Product = (props: RouteComponentProps<ProductDetailParams>) => {
-
+const Product = (props: ProductDetailParams) => {
     return (
         <>
             <h1>Product PAGE</h1>
             <p>{props.match.params.id}</p>
-        </>)
-}
+        </>
+    );
+};
 
-export default withRouter(Product)
+export default withRouter(Product);

@@ -11,7 +11,13 @@
     "@types/react": "^17.0.21",
     "@types/react-dom": "^17.0.9",
     "@types/react-redux": "^7.1.18",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
     "axios": "^0.21.4",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.5",
@@ -27,7 +33,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src",
+    "lint-fix": "eslint ./src --fix",
+    "tsc": "tsc"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.9"
+    "@types/react-router-dom": "^5.1.9",
+    "eslint-plugin-react": "^7.25.2"
   }
 }

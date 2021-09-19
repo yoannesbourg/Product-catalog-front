@@ -1,26 +1,29 @@
-
-import * as productActionTypes from "./actionsType"
-
+import * as productActionTypes from './actionsType';
+import { Product } from '../../Interfaces/Product';
 interface ReduxRootState {
-    data: any,
-    loading: boolean
-    status?: number
+    data: Product[] | [];
+    loading: boolean;
+    status?: number;
 }
 
 export default interface ReduxActionInterface {
     type: string;
-    payload: any;
+    payload: {
+        data: Product[] | [];
+        status: number | undefined;
+    };
 }
-
 
 const ROOT_VALUE_STATE: ReduxRootState = {
     data: [],
     loading: false,
 };
 
-export const productsReducer = (state: ReduxRootState = ROOT_VALUE_STATE, action: ReduxActionInterface) => {
+export const productsReducer = (
+    state: ReduxRootState = ROOT_VALUE_STATE,
+    action: ReduxActionInterface,
+): ReduxRootState => {
     switch (action.type) {
-
         case productActionTypes.PRODUCTS_LOADING:
             return {
                 ...state,
@@ -32,7 +35,7 @@ export const productsReducer = (state: ReduxRootState = ROOT_VALUE_STATE, action
                 return {
                     ...state,
                     loading: false,
-                    error: action.payload.message,
+                    status: action.payload.status,
                 };
             }
 
@@ -41,14 +44,15 @@ export const productsReducer = (state: ReduxRootState = ROOT_VALUE_STATE, action
         case productActionTypes.PRODUCTS_SUCCESS:
             if (action.payload) {
                 return {
-                    data: action.payload.data.data,
+                    data: action.payload.data,
                     loading: false,
-                    status: action.payload.data.status,
+                    status: action.payload.status,
                 };
             }
 
             return state;
 
-        default: return state;
+        default:
+            return state;
     }
 };

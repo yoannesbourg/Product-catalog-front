@@ -1,38 +1,30 @@
-import React, { useEffect, useState } from "react"
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchAllProducts } from "../service/products/actions"
-import { Link } from "react-router-dom"
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchAllProducts } from '../service/products/actions';
+import { Link } from 'react-router-dom';
 
+import { StoreState } from '../service/StoreState';
 
-interface Product {
-    description: string;
-    _id: string;
-}
-
-interface ShopPageProps {
-    products: any
-}
-
-const Shop = () => {
-    const productsStore = useSelector((state: any) => state.productsReducer.data)
-    const dispatch = useDispatch()
+const Shop = (): JSX.Element => {
+    const productsStore = useSelector((state: StoreState) => state.productsReducer.data);
+    const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchAllProducts())
-    }, [])
+        dispatch(fetchAllProducts());
+    }, []);
 
     return (
         <>
             Home
-            {
-                productsStore && productsStore.map((product: any) => {
+            {productsStore &&
+                productsStore.map((product, i) => {
                     return (
-                        <Link to={`/product/${product._id}`}>
+                        <Link key={i} to={`/product/${product._id}`}>
                             <p>{product.description}</p>
                         </Link>
-                    )
-                })
-            }
-        </>)
-}
+                    );
+                })}
+        </>
+    );
+};
 
 export default Shop;
