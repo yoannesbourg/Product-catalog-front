@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { StoreState } from '../../service/StoreState';
 
-import { ProductPageContainer, InfoWrapper } from './StyledComponents';
+import { ProductPageContainer, InfoWrapper, EditWrapper } from './StyledComponents';
 
 interface ProductDetailParams {
     match: {
@@ -98,12 +98,12 @@ const Product = (props: ProductDetailParams) => {
 
             <InfoWrapper>
                 {isEditing ? (
-                    <>
+                    <EditWrapper>
                         <input value={name} onChange={(e) => handleEdit(e, setName)} />
                         <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
-
+                        <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
                         <button onClick={updateProduct}>Update</button>
-                    </>
+                    </EditWrapper>
                 ) : (
                     <div onClick={() => setEditing(true)}>
                         <h1>{actualProduct.name}</h1>
