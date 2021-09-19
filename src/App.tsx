@@ -1,31 +1,32 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import Shop from './Pages/Shop';
+import Shop from './Pages/Shop/Shop';
 import Product from './Pages/Product';
+
+import { AppBackground, AppContainer, NavBar, Ul } from './AppStyledComponents';
 
 const App = (): JSX.Element => (
     <Router>
-        <div>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Shop</Link>
-                    </li>
-                </ul>
-            </nav>
-
-            {/* A <Switch> looks through its children <Route>s and
+        <AppBackground>
+            <NavBar>
+                <Ul>
+                    <Link to="/">Shop</Link>
+                </Ul>
+            </NavBar>
+            <AppContainer>
+                {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-            <Switch>
-                <Route path="/product/:id">
-                    <Product />
-                </Route>
-                <Route path="/">
-                    <Shop />
-                </Route>
-            </Switch>
-        </div>
+                <Switch>
+                    <Route path="/product/:id">
+                        <Product />
+                    </Route>
+                    <Route path="/">
+                        <Shop />
+                    </Route>
+                </Switch>
+            </AppContainer>
+        </AppBackground>
     </Router>
 );
 export default App;
