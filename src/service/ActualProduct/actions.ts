@@ -44,7 +44,6 @@ export const updateProductById =
             const response = await AxiosConfig.put(`/products/update/${id}`, { newValues });
 
             if (response.status !== 200) {
-                console.log(response);
                 return dispatch({
                     type: productActionTypes.SINGLE_PRODUCT_ERROR,
                     payload: {

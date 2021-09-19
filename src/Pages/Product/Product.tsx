@@ -71,15 +71,12 @@ const Product = (props: ProductDetailParams) => {
     }, [isEditing]);
 
     useEffect(() => {
-        if (status === 200) {
-            setAllStates();
-        }
-    }, [actualProduct]);
+        setAllStates();
+    }, [isEditing]);
 
     if (!actualProduct.name) {
         return <p>Loading</p>;
     }
-    console.log(actualProduct);
 
     return (
         <ProductPageContainer>
@@ -109,9 +106,9 @@ const Product = (props: ProductDetailParams) => {
                     </>
                 ) : (
                     <div onClick={() => setEditing(true)}>
-                        <h1>{name}</h1>
-                        <p>{description}</p>
-                        <p>{price} €</p>
+                        <h1>{actualProduct.name}</h1>
+                        <p>{actualProduct.description}</p>
+                        <p>{actualProduct.price} €</p>
                     </div>
                 )}
 
