@@ -28,3 +28,7 @@ p {
 strong {
     color: #1e1e1e;
 }
+
+button {
+    border: none;
+}
