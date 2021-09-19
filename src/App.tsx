@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Shop from './Pages/Shop/Shop';
 import Product from './Pages/Product/Product';
+import New from './Pages/New/New';
 
 import { AppBackground, AppContainer, NavBar, Ul } from './AppStyledComponents';
 
@@ -12,6 +13,7 @@ const App = (): JSX.Element => (
             <NavBar>
                 <Ul>
                     <Link to="/">Shop</Link>
+                    <Link to="/new">New Product</Link>
                 </Ul>
             </NavBar>
             <AppContainer>
@@ -20,6 +22,9 @@ const App = (): JSX.Element => (
                 <Switch>
                     <Route path="/product/:id">
                         <Product />
+                    </Route>
+                    <Route path="/new">
+                        <New />
                     </Route>
                     <Route path="/">
                         <Shop />
