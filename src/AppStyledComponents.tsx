@@ -11,8 +11,7 @@ export const AppContainer = styled.div`
     width: 80%;
     margin: 0 auto;
     padding: 48px 0;
-    display: flex;
-    justify-content: center;
+    text-align: center;
 `;
 
 export const NavBar = styled.div`
