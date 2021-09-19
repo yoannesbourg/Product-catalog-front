@@ -1,7 +1,7 @@
-import * as productActionTypes from './actionsType';
+import * as singleProductActionTypes from './actionsType';
 import { Product } from '../../Interfaces/Product';
 interface ReduxRootState {
-    data: Product[] | [];
+    data: Product | Record<string, unknown>;
     loading: boolean;
     status?: number;
 }
@@ -9,28 +9,28 @@ interface ReduxRootState {
 export default interface ReduxActionInterface {
     type: string;
     payload: {
-        data: Product[] | [];
+        data: Product | Record<string, unknown>;
         status: number | undefined;
     };
 }
 
 const ROOT_VALUE_STATE: ReduxRootState = {
-    data: [],
+    data: {},
     loading: false,
 };
 
-export const productsReducer = (
+export const ActualProduct = (
     state: ReduxRootState = ROOT_VALUE_STATE,
     action: ReduxActionInterface,
 ): ReduxRootState => {
     switch (action.type) {
-        case productActionTypes.PRODUCTS_LOADING:
+        case singleProductActionTypes.SINGLE_PRODUCT_LOADING:
             return {
                 ...state,
                 loading: true,
             };
 
-        case productActionTypes.PRODUCTS_ERROR:
+        case singleProductActionTypes.SINGLE_PRODUCT_ERROR:
             if (action.payload) {
                 return {
                     ...state,
@@ -41,7 +41,7 @@ export const productsReducer = (
 
             return state;
 
-        case productActionTypes.PRODUCTS_SUCCESS:
+        case singleProductActionTypes.SINGLE_PRODUCT_SUCCESS:
             if (action.payload) {
                 return {
                     data: action.payload.data,

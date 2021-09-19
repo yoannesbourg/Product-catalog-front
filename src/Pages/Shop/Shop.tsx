@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllProducts } from '../../service/products/actions';
+import { fetchAllProducts } from '../../service/ProductList/actions';
 import { Link } from 'react-router-dom';
 
 import { StoreState } from '../../service/StoreState';
@@ -8,7 +8,7 @@ import { StoreState } from '../../service/StoreState';
 import { ProductList, ProductWrapper } from './StyledComponents';
 
 const Shop = (): JSX.Element => {
-    const productsStore = useSelector((state: StoreState) => state.productsReducer.data);
+    const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchAllProducts());
@@ -16,8 +16,8 @@ const Shop = (): JSX.Element => {
 
     return (
         <ProductList>
-            {productsStore &&
-                productsStore.map((product, i) => {
+            {ProductListStore &&
+                ProductListStore.map((product, i) => {
                     return (
                         <Link key={i} to={`/product/${product._id}`}>
                             <ProductWrapper>

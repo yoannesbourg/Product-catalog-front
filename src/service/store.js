@@ -1,9 +1,11 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { productsReducer } from './products/reducer';
+import { ProductListReducer } from './ProductList/reducer';
+import { ActualProduct } from './ActualProduct/reducer';
 import thunk from 'redux-thunk';
 
 const allReducers = combineReducers({
-    productsReducer,
+    ProductList: ProductListReducer,
+    ActualProduct,
 });
 
 const store = createStore(

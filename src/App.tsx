@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Shop from './Pages/Shop/Shop';
-import Product from './Pages/Product';
+import Product from './Pages/Product/Product';
 
 import { AppBackground, AppContainer, NavBar, Ul } from './AppStyledComponents';
 
