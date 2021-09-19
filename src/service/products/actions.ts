@@ -10,16 +10,21 @@ export const fetchAllProducts = (): ThunkAction<void, null, unknown, Action<stri
     });
     try {
         const response = await AxiosConfig.get(`/products`);
+
         if (response.status !== 200) {
             return dispatch({
                 type: productActionTypes.PRODUCTS_ERROR,
+                payload: {
+                    status: response.status,
+                },
             });
         }
 
         return dispatch({
             type: productActionTypes.PRODUCTS_SUCCESS,
             payload: {
-                data: response,
+                data: response.data,
+                status: response.status,
             },
         });
     } catch (error) {

@@ -7,7 +7,7 @@ export const loadProxyUrl = (): string | undefined => {
 };
 
 const AxiosConfig = axios.create({
-    baseURL: `${loadProxyUrl()}/`,
+    baseURL: `${loadProxyUrl()}/api/`,
     headers: {
         'Content-Type': 'application/json',
     },
