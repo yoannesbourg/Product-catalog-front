@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { createProduct } from '../../service/ActualProduct/actions';
 import styled from 'styled-components';
 

@@ -10,7 +10,6 @@ export const fetchAllProducts =
         dispatch({
             type: productActionTypes.PRODUCTS_LOADING,
         });
-        console.log(filter);
         try {
             const response = await AxiosConfig.get(`/products/${page}/${filter}`);
             console.log(response);
