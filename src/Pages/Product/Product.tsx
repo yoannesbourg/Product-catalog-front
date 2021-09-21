@@ -1,13 +1,13 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProductById, updateProductById } from '../../service/ActualProduct/actions';
-import { withRouter } from 'react-router';
+import { fetchProductById, updateProductById, deleteProduct } from '../../service/ActualProduct/actions';
+import { RouteComponentProps, withRouter } from 'react-router';
+// import { createBrowserHistory } from 'history';
 import styled from 'styled-components';
 
 import { StoreState } from '../../service/StoreState';
 
 import { ProductPageContainer, InfoWrapper, EditWrapper } from './StyledComponents';
-
 interface ProductDetailParams {
     match: {
         params: {
@@ -42,6 +42,10 @@ const Product = (props: ProductDetailParams) => {
 
     const handleEdit = (e: React.ChangeEvent<HTMLInputElement>, setter: Dispatch<SetStateAction<string>>) => {
         setter(e.target.value);
+    };
+
+    const handleDelete = () => {
+        window.location.replace('/');
     };
 
     const setAllStates = () => {
@@ -95,20 +99,24 @@ const Product = (props: ProductDetailParams) => {
             <PhotoWrapper />
 
             <InfoWrapper>
-                {isEditing ? (
-                    <EditWrapper>
-                        <input value={name} onChange={(e) => handleEdit(e, setName)} />
-                        <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
-                        <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
-                        <button onClick={updateProduct}>Update</button>
-                    </EditWrapper>
-                ) : (
-                    <div onClick={() => setEditing(true)}>
-                        <h1>{actualProduct.name}</h1>
-                        <p>{actualProduct.description}</p>
-                        <p>{actualProduct.price} €</p>
-                    </div>
-                )}
+                <div>
+                    {isEditing ? (
+                        <EditWrapper>
+                            <input value={name} onChange={(e) => handleEdit(e, setName)} />
+                            <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
+                            <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
+                            <button onClick={updateProduct}>Update</button>
+                        </EditWrapper>
+                    ) : (
+                        <>
+                            <h1>{actualProduct.name}</h1>
+                            <p>{actualProduct.description}</p>
+                            <p>{actualProduct.price} €</p>
+                        </>
+                    )}
+                </div>
+                <button onClick={() => setEditing(!isEditing)}>Edit</button>
+                <button onClick={handleDelete}>Delete</button>
             </InfoWrapper>
         </ProductPageContainer>
     );
