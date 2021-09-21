@@ -16,9 +16,9 @@ export const AppContainer = styled.div`
 
 export const NavBar = styled.div`
     color: white;
-    width: 100%;
+    width: 50%;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 `;
 

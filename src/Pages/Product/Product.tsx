@@ -18,9 +18,7 @@ interface ProductDetailParams {
 
 const Product = (props: ProductDetailParams) => {
     const { id } = props.match.params;
-    const status = useSelector((state: StoreState) => state.ActualProduct.status);
     const actualProduct = useSelector((state: StoreState) => state.ActualProduct.data);
-    // const { name, description, photo, price } = actualProduct;
 
     //product states
     const [name, setName] = useState<string>(actualProduct.name);
@@ -111,9 +109,6 @@ const Product = (props: ProductDetailParams) => {
                         <p>{actualProduct.price} €</p>
                     </div>
                 )}
-
-                {/* <p>{description}</p>
-                <p>{price}</p> */}
             </InfoWrapper>
         </ProductPageContainer>
     );

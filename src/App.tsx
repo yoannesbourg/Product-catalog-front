@@ -5,17 +5,15 @@ import Shop from './Pages/Shop/Shop';
 import Product from './Pages/Product/Product';
 import New from './Pages/New/New';
 
-import { AppBackground, AppContainer, NavBar, Ul } from './AppStyledComponents';
+import { AppBackground, AppContainer, NavBar } from './AppStyledComponents';
 
 const App = (): JSX.Element => {
     return (
         <Router>
             <AppBackground>
                 <NavBar>
-                    <Ul>
-                        <Link to="/">Shop</Link>
-                        <Link to="/new">New Product</Link>
-                    </Ul>
+                    <Link to="/">Shop</Link>
+                    <Link to="/new">New Product</Link>
                 </NavBar>
 
                 <AppContainer>

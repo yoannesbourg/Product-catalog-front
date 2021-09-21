@@ -1,9 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../../service/ActualProduct/actions';
 import styled from 'styled-components';
 
 import { ProductPageContainer, InfoWrapper, EditWrapper } from './StyledComponents';
+
+import { StoreState } from '../../service/StoreState';
 
 const New = (): JSX.Element => {
     //product states
@@ -12,6 +14,8 @@ const New = (): JSX.Element => {
     const [photo, setPhoto] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
     const [active, setActive] = useState<boolean>(false);
+    const actualStoreStatus = useSelector((state: StoreState) => state.ActualProduct.status);
+
     //domstates
     const dispatch = useDispatch();
 
@@ -29,15 +33,37 @@ const New = (): JSX.Element => {
         setter(e.target.value);
     };
 
+    const resetFields = () => {
+        setName('');
+        setDescription('');
+        setPhoto('');
+        setPrice(0);
+        setActive(false);
+    };
+
+    const handleSuccess = () => {
+        if (actualStoreStatus === 200) {
+            resetFields();
+            alert('Success');
+        } else {
+            alert('Something went wrong while your product creation. Please contact our support');
+        }
+    };
+
     const createNewProduct = () => {
-        const newProduct = {
-            name,
-            description,
-            photo,
-            price,
-            active,
-        };
-        dispatch(createProduct(newProduct));
+        if (name && description && photo && price) {
+            const newProduct = {
+                name,
+                description,
+                photo,
+                price,
+                active,
+            };
+            dispatch(createProduct(newProduct));
+            handleSuccess();
+        } else {
+            alert('Please fill all fields');
+        }
     };
 
     return (
@@ -62,13 +88,17 @@ const New = (): JSX.Element => {
                 <EditWrapper>
                     <input value={name} onChange={(e) => handleEdit(e, setName)} />
                     <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
-                    <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
+                    <input
+                        value={price}
+                        onChange={(e) => {
+                            if (parseInt(e.target.value) !== NaN) {
+                                setPrice(parseInt(e.target.value));
+                            }
+                        }}
+                    />
                     <input type="checkbox" checked={active} value={'active'} onChange={() => setActive(!active)} />
                     <button onClick={createNewProduct}>Create</button>
                 </EditWrapper>
-
-                {/* <p>{description}</p>
-                <p>{price}</p> */}
             </InfoWrapper>
         </ProductPageContainer>
     );

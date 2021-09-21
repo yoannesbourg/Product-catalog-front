@@ -67,21 +67,21 @@ export const createProduct =
     (newProduct: Product): ThunkAction<void, null, unknown, Action<string>> =>
     async (dispatch) => {
         dispatch({
-            type: productActionTypes.SINGLE_PRODUCT_LOADING,
+            type: productActionTypes.CREATE_PRODUCT_LOADING,
         });
         try {
             const response = await AxiosConfig.post(`/products/create/`, { newProduct });
 
             if (response.status !== 200) {
                 return dispatch({
-                    type: productActionTypes.SINGLE_PRODUCT_ERROR,
+                    type: productActionTypes.CREATE_PRODUCT_ERROR,
                     payload: {
                         status: response.status,
                     },
                 });
             }
             return dispatch({
-                type: productActionTypes.SINGLE_PRODUCT_SUCCESS,
+                type: productActionTypes.CREATE_PRODUCT_SUCESS,
                 payload: {
                     data: response.data,
                     status: response.status,

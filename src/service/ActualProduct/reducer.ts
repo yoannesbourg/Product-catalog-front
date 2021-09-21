@@ -49,6 +49,33 @@ export const ActualProduct = (
                     status: action.payload.status,
                 };
             }
+            return state;
+
+        case singleProductActionTypes.CREATE_PRODUCT_LOADING:
+            return {
+                ...state,
+                loading: true,
+            };
+
+        case singleProductActionTypes.CREATE_PRODUCT_ERROR:
+            if (action.payload) {
+                return {
+                    ...state,
+                    loading: false,
+                    status: action.payload.status,
+                };
+            }
+
+            return state;
+
+        case singleProductActionTypes.CREATE_PRODUCT_SUCESS:
+            if (action.payload) {
+                return {
+                    data: action.payload.data,
+                    loading: false,
+                    status: action.payload.status,
+                };
+            }
 
             return state;
 
