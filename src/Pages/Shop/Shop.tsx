@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { filterByActive } from '../../service/ActualProduct/actions';
 import { fetchAllProducts } from '../../service/ProductList/actions';
 import { Link } from 'react-router-dom';
 
@@ -11,29 +10,50 @@ import { ProductList, ProductWrapper } from './StyledComponents';
 const Shop = (): JSX.Element => {
     const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
     const dispatch = useDispatch();
+    const _filterValues = {
+        all: 'all',
+        active: 'active',
+        notActive: 'notActive',
+    };
+    const _filterOptions = {
+        all: 'All',
+        active: 'Active',
+        notActive: 'Not active',
+    };
+    const [page, setPage] = useState<number>(1);
+    const [filter, setFilter] = useState<string>(_filterValues.all);
     useEffect(() => {
-        dispatch(fetchAllProducts());
-    }, []);
+        console.log(filter);
+        dispatch(fetchAllProducts(page, filter));
+    }, [filter, page]);
 
     const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const filter = e.target.value;
-        console.log(filter);
+        const filterValue = e.target.value;
 
-        if (filter === 'All') {
-            dispatch(fetchAllProducts());
-        } else if (filter === 'Active') {
-            dispatch(filterByActive(true));
-        } else if (filter === 'Not active') {
-            dispatch(filterByActive(false));
+        switch (filterValue) {
+            case _filterOptions.active:
+                setFilter(_filterValues.active);
+                setPage(1);
+                break;
+
+            case _filterOptions.notActive:
+                setFilter(_filterValues.notActive);
+                setPage(1);
+                break;
+
+            case _filterOptions.all:
+                setFilter(_filterValues.all);
+                setPage(1);
+                break;
         }
     };
 
     return (
         <>
             <select onChange={handleFilter}>
-                <option>Active</option>
-                <option>Not active</option>
-                <option>All</option>
+                <option>{_filterOptions.all}</option>
+                <option>{_filterOptions.active}</option>
+                <option>{_filterOptions.notActive}</option>
             </select>
             <ProductList>
                 {ProductListStore &&
@@ -52,6 +72,8 @@ const Shop = (): JSX.Element => {
                         );
                     })}
             </ProductList>
+            <button onClick={() => setPage(page - 1)}>Prev</button>
+            <button onClick={() => setPage(page + 1)}>Next</button>
         </>
     );
 };
