@@ -21,7 +21,7 @@ const Shop = (): JSX.Element => {
         active: 'Active',
         notActive: 'Not active',
     };
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(0);
     const [filter, setFilter] = useState<string>(_filterValues.all);
     useEffect(() => {
         dispatch(fetchAllProducts(page, filter));
@@ -33,17 +33,17 @@ const Shop = (): JSX.Element => {
         switch (filterValue) {
             case _filterOptions.active:
                 setFilter(_filterValues.active);
-                setPage(1);
+                setPage(0);
                 break;
 
             case _filterOptions.notActive:
                 setFilter(_filterValues.notActive);
-                setPage(1);
+                setPage(0);
                 break;
 
             case _filterOptions.all:
                 setFilter(_filterValues.all);
-                setPage(1);
+                setPage(0);
                 break;
         }
     };
@@ -89,7 +89,7 @@ const Shop = (): JSX.Element => {
                         );
                     })}
             </ProductList>
-            {page !== 1 && <button onClick={() => setPage(page - 1)}>Prev</button>}
+            {page !== 0 && <button onClick={() => setPage(page - 1)}>Prev</button>}
             <button onClick={() => setPage(page + 1)}>Next</button>
         </>
     );

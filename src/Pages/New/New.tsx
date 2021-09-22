@@ -11,7 +11,7 @@ const New = (): JSX.Element => {
     //product states
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [photo, setPhoto] = useState<string>('');
+    const [photo, setPhoto] = useState<string>('/');
     const [price, setPrice] = useState<number>(0);
     const [active, setActive] = useState<boolean>(false);
     const actualStoreStatus = useSelector((state: StoreState) => state.ActualProduct.status);
@@ -42,16 +42,12 @@ const New = (): JSX.Element => {
     };
 
     const handleSuccess = () => {
-        if (actualStoreStatus === 200) {
-            resetFields();
-            alert('Success');
-        } else {
-            alert('Something went wrong while your product creation. Please contact our support');
-        }
+        resetFields();
+        alert('Success');
     };
 
     const createNewProduct = () => {
-        if (name && description && photo && price) {
+        if (name && description && price && photo) {
             const newProduct = {
                 name,
                 description,

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProductById, updateProductById } from '../../service/ActualProduct/actions';
+import { deleteProduct, fetchProductById, updateProductById } from '../../service/ActualProduct/actions';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
@@ -47,6 +47,7 @@ const Product = (props: ProductDetailParams) => {
     };
 
     const handleDelete = () => {
+        dispatch(deleteProduct(id));
         window.location.replace('/');
     };
 
