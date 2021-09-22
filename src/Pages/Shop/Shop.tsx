@@ -24,7 +24,6 @@ const Shop = (): JSX.Element => {
     const [page, setPage] = useState<number>(1);
     const [filter, setFilter] = useState<string>(_filterValues.all);
     useEffect(() => {
-        console.log(filter);
         dispatch(fetchAllProducts(page, filter));
     }, [filter, page]);
 
@@ -90,7 +89,7 @@ const Shop = (): JSX.Element => {
                         );
                     })}
             </ProductList>
-            <button onClick={() => setPage(page - 1)}>Prev</button>
+            {page !== 1 && <button onClick={() => setPage(page - 1)}>Prev</button>}
             <button onClick={() => setPage(page + 1)}>Next</button>
         </>
     );
