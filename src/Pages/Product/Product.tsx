@@ -1,8 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProductById, updateProductById, deleteProduct } from '../../service/ActualProduct/actions';
-import { RouteComponentProps, withRouter } from 'react-router';
-// import { createBrowserHistory } from 'history';
+import { fetchProductById, updateProductById } from '../../service/ActualProduct/actions';
+import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
 import { StoreState } from '../../service/StoreState';
@@ -30,8 +29,11 @@ const Product = (props: ProductDetailParams) => {
     const [isEditing, setEditing] = useState<boolean>(false);
     const dispatch = useDispatch();
 
+    const defaultProdcutImage =
+        'https://myspringfield.com/dw/image/v2/AAYL_PRD/on/demandware.static/-/Sites-gc-spf-master-catalog/default/dw11ab6907/images/hi-res/P_026269248FM.jpg?sw=600&sh=900&sm=fit';
+
     const PhotoWrapper = styled.div`
-        background-image: url(${actualProduct.photo});
+        background-image: url(${defaultProdcutImage});
         background-size: cover;
         background-repeat: no-repeat;
         background-color: white;
