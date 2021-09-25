@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllProducts } from '../../service/ProductList/actions';
 import { Link } from 'react-router-dom';
@@ -12,17 +12,21 @@ const Shop = (): JSX.Element => {
     const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
     const ProductListLength = useSelector((state: StoreState) => state.ProductList.listLength);
     const dispatch = useDispatch();
-    const _filterValues = {
-        all: 'all',
-        active: 'active',
-        notActive: 'notActive',
-    };
-    //useMemo
-    const _filterOptions = {
-        all: 'All',
-        active: 'Active',
-        notActive: 'Not active',
-    };
+    useMemo;
+    const _filterValues = useMemo(() => {
+        return {
+            all: 'all',
+            active: 'active',
+            notActive: 'notActive',
+        };
+    }, []);
+    const _filterOptions = useMemo(() => {
+        return {
+            all: 'All',
+            active: 'Active',
+            notActive: 'Not active',
+        };
+    }, []);
     const _limit = 10;
     const [page, setPage] = useState<number>(0);
     const [filter, setFilter] = useState<string>(_filterValues.all);

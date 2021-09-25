@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 import Shop from './Pages/Shop/Shop';
 import Product from './Pages/Product/Product';
@@ -24,9 +24,14 @@ const App = (): JSX.Element => {
                         <Route path="/new">
                             <New />
                         </Route>
-                        <Route path="/">
+                        <Route exact path="/">
                             <Shop />
                         </Route>
+                        <Redirect
+                            to={{
+                                pathname: '/',
+                            }}
+                        />
                     </Switch>
                 </AppContainer>
             </AppBackground>

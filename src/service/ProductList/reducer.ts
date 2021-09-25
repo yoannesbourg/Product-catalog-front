@@ -79,6 +79,7 @@ export const ProductListReducer = (
                 productList.push(action.payload.data);
                 console.log(action.payload);
                 return {
+                    ...state,
                     data: action.payload.data,
                     loading: false,
                     status: action.payload.status,
