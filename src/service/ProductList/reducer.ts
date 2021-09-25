@@ -4,6 +4,7 @@ interface ReduxRootState {
     data: Product[] | [];
     loading: boolean;
     status?: number;
+    listLength: number | undefined;
 }
 
 export default interface ReduxActionInterface {
@@ -11,12 +12,14 @@ export default interface ReduxActionInterface {
     payload: {
         data: Product[] | [];
         status: number | undefined;
+        listLength: number;
     };
 }
 
 const ROOT_VALUE_STATE: ReduxRootState = {
     data: [],
     loading: false,
+    listLength: 0,
 };
 
 export const ProductListReducer = (
@@ -47,6 +50,7 @@ export const ProductListReducer = (
                     data: action.payload.data,
                     loading: false,
                     status: action.payload.status,
+                    listLength: action.payload.listLength,
                 };
             }
 
@@ -73,11 +77,12 @@ export const ProductListReducer = (
             if (action.payload) {
                 const productList = [];
                 productList.push(action.payload.data);
-                console.log(productList);
+                console.log(action.payload);
                 return {
                     data: action.payload.data,
                     loading: false,
                     status: action.payload.status,
+                    listLength: action.payload.listLength,
                 };
             }
 

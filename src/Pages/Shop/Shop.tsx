@@ -10,23 +10,26 @@ import { ProductList, ProductInfos, H3, P } from './StyledComponents';
 
 const Shop = (): JSX.Element => {
     const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
+    const ProductListLength = useSelector((state: StoreState) => state.ProductList.listLength);
     const dispatch = useDispatch();
     const _filterValues = {
         all: 'all',
         active: 'active',
         notActive: 'notActive',
     };
+    //useMemo
     const _filterOptions = {
         all: 'All',
         active: 'Active',
         notActive: 'Not active',
     };
+    const _limit = 10;
     const [page, setPage] = useState<number>(0);
     const [filter, setFilter] = useState<string>(_filterValues.all);
+    const shouldDisplayNextButton = ProductListLength - (page + 1) * _limit > 0;
     useEffect(() => {
-        dispatch(fetchAllProducts(page, filter));
+        dispatch(fetchAllProducts(page, filter, _limit));
     }, [filter, page]);
-
     const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const filterValue = e.target.value;
 
@@ -69,9 +72,9 @@ const Shop = (): JSX.Element => {
     return (
         <>
             <select onChange={handleFilter}>
-                <option>{_filterOptions.all}</option>
-                <option>{_filterOptions.active}</option>
-                <option>{_filterOptions.notActive}</option>
+                {Object.entries(_filterOptions).map((option, i) => {
+                    return <option key={i + option[option.length - 1]}>{option[option.length - 1]}</option>;
+                })}
             </select>
             <ProductList>
                 {ProductListStore &&
@@ -90,7 +93,7 @@ const Shop = (): JSX.Element => {
                     })}
             </ProductList>
             {page !== 0 && <button onClick={() => setPage(page - 1)}>Prev</button>}
-            <button onClick={() => setPage(page + 1)}>Next</button>
+            {shouldDisplayNextButton && <button onClick={() => setPage(page + 1)}>Next</button>}
         </>
     );
 };

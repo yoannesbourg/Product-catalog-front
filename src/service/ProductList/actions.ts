@@ -5,14 +5,13 @@ import * as productActionTypes from './actionsType';
 import AxiosConfig from '../../config/axios.config';
 
 export const fetchAllProducts =
-    (page: number, filter: string): ThunkAction<void, null, unknown, Action<string>> =>
+    (page: number, filter: string, limit: number): ThunkAction<void, null, unknown, Action<string>> =>
     async (dispatch) => {
         dispatch({
             type: productActionTypes.PRODUCTS_LOADING,
         });
         try {
-            const response = await AxiosConfig.get(`/products/${page}/${filter}`);
-            console.log(response);
+            const response = await AxiosConfig.get(`/products/${page}/${filter}/${limit}`);
             if (response.status !== 200) {
                 return dispatch({
                     type: productActionTypes.PRODUCTS_ERROR,
@@ -25,8 +24,9 @@ export const fetchAllProducts =
             return dispatch({
                 type: productActionTypes.PRODUCTS_SUCCESS,
                 payload: {
-                    data: response.data,
+                    data: response.data.product,
                     status: response.status,
+                    listLength: response.data.listLength,
                 },
             });
         } catch (error) {

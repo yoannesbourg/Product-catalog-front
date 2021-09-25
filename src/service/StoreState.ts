@@ -7,6 +7,7 @@ export interface StoreState {
 export interface ProductListReducer {
     data: Product[] | [];
     loading: false;
+    listLength: number;
 }
 
 export interface ActualProduct {
