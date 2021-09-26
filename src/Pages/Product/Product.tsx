@@ -1,12 +1,11 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProduct, fetchProductById, updateProductById } from '../../service/ActualProduct/actions';
+import { deleteProduct, fetchProductById, updateProductById, uploadImage } from '../../service/ActualProduct/actions';
 import { withRouter } from 'react-router';
-import styled from 'styled-components';
 
 import { StoreState } from '../../service/StoreState';
 
-import { ProductPageContainer, InfoWrapper, EditWrapper } from './StyledComponents';
+import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper, EditPhotoWrapper } from './StyledComponents';
 interface ProductDetailParams {
     match: {
         params: {
@@ -18,6 +17,8 @@ interface ProductDetailParams {
 const Product = (props: ProductDetailParams) => {
     const { id } = props.match.params;
     const actualProduct = useSelector((state: StoreState) => state.ActualProduct.data);
+    const isLoading = useSelector((state: StoreState) => state.ActualProduct.loading);
+    const status = useSelector((state: StoreState) => state.ActualProduct.status);
 
     //product states
     const [name, setName] = useState<string>(actualProduct.name);
@@ -29,19 +30,6 @@ const Product = (props: ProductDetailParams) => {
     const [isEditing, setEditing] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    const defaultProdcutImage =
-        'https://myspringfield.com/dw/image/v2/AAYL_PRD/on/demandware.static/-/Sites-gc-spf-master-catalog/default/dw11ab6907/images/hi-res/P_026269248FM.jpg?sw=600&sh=900&sm=fit';
-
-    const PhotoWrapper = styled.div`
-        background-image: url(${actualProduct.photo});
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-color: white;
-        width: 50%;
-        height: 50vh;
-        border-radius: 24px;
-    `;
-
     const handleEdit = (e: React.ChangeEvent<HTMLInputElement>, setter: Dispatch<SetStateAction<string>>) => {
         setter(e.target.value);
     };
@@ -51,11 +39,19 @@ const Product = (props: ProductDetailParams) => {
         window.location.replace('/');
     };
 
+    const handleUploadImage = async (event: any) => {
+        const formData = new FormData();
+        formData.append('file', event.target.files[0]);
+        formData.append('upload_preset', 'dr973rmw');
+        setPhoto(URL.createObjectURL(event.target.files[0]));
+        dispatch(uploadImage(formData));
+    };
+
     const setAllStates = () => {
         setName(actualProduct.name);
         setDescription(actualProduct.description);
         setPrice(actualProduct.price);
-        setPhoto(actualProduct.photo);
+        setPhoto(actualProduct.uploadedImg ? actualProduct.uploadedImg : actualProduct.photo);
         setActive(actualProduct.active);
     };
 
@@ -68,7 +64,9 @@ const Product = (props: ProductDetailParams) => {
             active,
         };
         dispatch(updateProductById(id, updatedProduct));
-        setEditing(false);
+        if (status === 200) {
+            setEditing(false);
+        }
     };
 
     useEffect(() => {
@@ -79,13 +77,26 @@ const Product = (props: ProductDetailParams) => {
         setAllStates();
     }, [isEditing]);
 
-    if (!actualProduct.name) {
-        return <p>Loading</p>;
+    if (isLoading) {
+        return <p>Loaging</p>;
     }
 
     return (
         <ProductPageContainer>
-            <PhotoWrapper />
+            {isEditing ? (
+                <EditPhotoWrapper
+                    onChange={(event) => {
+                        handleUploadImage(event);
+                    }}
+                    type="file"
+                    name="file"
+                    id="file"
+                    height={0}
+                    photo={photo}
+                ></EditPhotoWrapper>
+            ) : (
+                <PhotoWrapper photo={actualProduct.photo}></PhotoWrapper>
+            )}
 
             <InfoWrapper>
                 <div>

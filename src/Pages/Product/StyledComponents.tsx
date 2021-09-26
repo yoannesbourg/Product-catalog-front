@@ -18,3 +18,23 @@ export const EditWrapper = styled.div`
     justify-content: center;
     align-items: center;
 `;
+
+export const PhotoWrapper = styled.div`
+    background-image: url(${(props: { photo: string }) => props.photo && props.photo});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: white;
+    width: 50%;
+    height: 50vh;
+    border-radius: 24px;
+`;
+
+export const EditPhotoWrapper = styled.input`
+    background-image: url(${(props: { photo: string }) => props.photo && props.photo});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: white;
+    width: 50%;
+    height: 50vh;
+    border-radius: 24px;
+`;

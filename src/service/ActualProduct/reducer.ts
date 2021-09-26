@@ -72,6 +72,7 @@ export const ActualProduct = (
         case singleProductActionTypes.CREATE_PRODUCT_SUCESS:
             if (action.payload) {
                 return {
+                    ...state,
                     data: action.payload.data,
                     loading: false,
                     status: action.payload.status,
