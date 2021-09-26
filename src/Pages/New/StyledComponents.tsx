@@ -44,3 +44,13 @@ export const ModalSucess = styled.div`
     z-index: 100;
     border-radius: 24px;
 `;
+
+export const PhotoWrapper = styled.input`
+    background-image: url(${(props: { photo: string }) => props.photo && props.photo});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: white;
+    width: 50%;
+    height: 50vh;
+    border-radius: 24px;
+`;

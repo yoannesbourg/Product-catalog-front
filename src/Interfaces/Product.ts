@@ -5,4 +5,5 @@ export interface Product {
     price: number;
     photo: string;
     active: boolean;
+    uploadedImg?: string;
 }

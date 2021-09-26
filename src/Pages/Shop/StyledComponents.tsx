@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+interface ProductWrapperProps {
+    photo: string;
+    notActive: boolean;
+}
 
 export const ProductList = styled.div`
     display: flex;
@@ -24,4 +28,20 @@ export const H3 = styled.h3`
 
 export const P = styled.p`
     color: white;
+`;
+
+export const ProductWrapper = styled.div`
+    background-image: url(${(props: ProductWrapperProps) => props.photo});
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    background-color: white;
+    padding: 16px;
+    width: 150px;
+    height: 200px;
+    margin-bottom: 48px;
+    box-shadow: 1px 3px 11px #9999998a;
+    margin-right: 24px;
+    margin-left: 24px;
+    opacity: ${(props: ProductWrapperProps) => (props.notActive ? '0.5' : '1')};
 `;

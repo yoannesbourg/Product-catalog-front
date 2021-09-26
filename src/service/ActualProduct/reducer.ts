@@ -1,5 +1,6 @@
 import * as singleProductActionTypes from './actionsType';
 import { Product } from '../../Interfaces/Product';
+import { stat } from 'fs';
 interface ReduxRootState {
     data: Product | Record<string, unknown>;
     loading: boolean;
@@ -72,6 +73,37 @@ export const ActualProduct = (
             if (action.payload) {
                 return {
                     data: action.payload.data,
+                    loading: false,
+                    status: action.payload.status,
+                };
+            }
+
+            return state;
+
+        case singleProductActionTypes.UPLOAD_IMAGE_LOADING:
+            return {
+                ...state,
+                loading: true,
+            };
+
+            return state;
+
+        case singleProductActionTypes.UPLOAD_IMAGE_ERROR:
+            if (action.payload) {
+                return {
+                    ...state,
+                    loading: false,
+                    status: action.payload.status,
+                };
+            }
+
+            return state;
+
+        case singleProductActionTypes.UPLOAD_IMAGE_SUCESS:
+            if (action.payload) {
+                state.data.uploadedImg = action.payload.data;
+                return {
+                    ...state,
                     loading: false,
                     status: action.payload.status,
                 };

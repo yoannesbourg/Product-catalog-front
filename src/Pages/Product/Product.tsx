@@ -33,7 +33,7 @@ const Product = (props: ProductDetailParams) => {
         'https://myspringfield.com/dw/image/v2/AAYL_PRD/on/demandware.static/-/Sites-gc-spf-master-catalog/default/dw11ab6907/images/hi-res/P_026269248FM.jpg?sw=600&sh=900&sm=fit';
 
     const PhotoWrapper = styled.div`
-        background-image: url(${defaultProdcutImage});
+        background-image: url(${actualProduct.photo});
         background-size: cover;
         background-repeat: no-repeat;
         background-color: white;
@@ -85,20 +85,6 @@ const Product = (props: ProductDetailParams) => {
 
     return (
         <ProductPageContainer>
-            {/* <label htmlFor="file" className="pencil banner_button">
-                upload
-            </label>
-
-            <input
-                onChange={async (e: any) => {
-                    console.log(e.target.files[0]);
-                }}
-                type="file"
-                name="file"
-                id="file"
-                hidden
-                height={0}
-            /> */}
             <PhotoWrapper />
 
             <InfoWrapper>

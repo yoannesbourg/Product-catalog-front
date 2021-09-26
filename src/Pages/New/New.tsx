@@ -1,9 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct } from '../../service/ActualProduct/actions';
-import styled from 'styled-components';
+import { createProduct, uploadImage } from '../../service/ActualProduct/actions';
 
-import { ProductPageContainer, InfoWrapper, EditWrapper } from './StyledComponents';
+import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper } from './StyledComponents';
 
 import { StoreState } from '../../service/StoreState';
 
@@ -14,20 +13,12 @@ const New = (): JSX.Element => {
     const [photo, setPhoto] = useState<string>('/');
     const [price, setPrice] = useState<number>(0);
     const [active, setActive] = useState<boolean>(false);
-    const actualStoreStatus = useSelector((state: StoreState) => state.ActualProduct.status);
+    const productImageFromStore = useSelector((state: StoreState) =>
+        state.ActualProduct.data.uploadedImg ? state.ActualProduct.data.uploadedImg : '',
+    );
 
     //domstates
     const dispatch = useDispatch();
-
-    const PhotoWrapper = styled.div`
-        background-image: url(${''});
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-color: white;
-        width: 50%;
-        height: 50vh;
-        border-radius: 24px;
-    `;
 
     const handleEdit = (e: React.ChangeEvent<HTMLInputElement>, setter: Dispatch<SetStateAction<string>>) => {
         setter(e.target.value);
@@ -62,23 +53,30 @@ const New = (): JSX.Element => {
         }
     };
 
+    const handleUploadImage = async (event: any) => {
+        const formData = new FormData();
+        console.log(event.target.files[0]);
+        formData.append('file', event.target.files[0]);
+        formData.append('upload_preset', 'dr973rmw');
+        dispatch(uploadImage(formData));
+    };
+
+    useEffect(() => {
+        if (productImageFromStore) {
+            setPhoto(productImageFromStore);
+        }
+    }, [productImageFromStore]);
+
     return (
         <ProductPageContainer>
-            {/* <label htmlFor="file" className="pencil banner_button">
-                upload
-            </label>
-
-            <input
-                onChange={async (e: any) => {
-                    console.log(e.target.files[0]);
-                }}
+            <PhotoWrapper
+                onChange={(event) => handleUploadImage(event)}
                 type="file"
                 name="file"
                 id="file"
-                hidden
                 height={0}
-            /> */}
-            <PhotoWrapper />
+                photo={productImageFromStore}
+            ></PhotoWrapper>
 
             <InfoWrapper>
                 <EditWrapper>
@@ -92,7 +90,10 @@ const New = (): JSX.Element => {
                             }
                         }}
                     />
-                    <input type="checkbox" checked={active} value={'active'} onChange={() => setActive(!active)} />
+                    <div>
+                        <label>Active</label>
+                        <input type="checkbox" checked={active} value={'active'} onChange={() => setActive(!active)} />
+                    </div>
                     <button onClick={createNewProduct}>Create</button>
                 </EditWrapper>
             </InfoWrapper>
