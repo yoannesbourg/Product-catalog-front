@@ -1,6 +1,5 @@
 import * as singleProductActionTypes from './actionsType';
 import { Product } from '../../Interfaces/Product';
-import { stat } from 'fs';
 interface ReduxRootState {
     data: Product | Record<string, unknown>;
     loading: boolean;
