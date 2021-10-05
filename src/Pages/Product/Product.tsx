@@ -1,11 +1,13 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProduct, fetchProductById, updateProductById, uploadImage } from '../../service/ActualProduct/actions';
+import { deleteProduct, uploadImage } from '../../service/ActualProduct/actions';
+import { updateProductById, fetchProductById } from '../../service/ProductList/actions';
 import { withRouter } from 'react-router';
 
 import { StoreState } from '../../service/StoreState';
 
 import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper, EditPhotoWrapper } from './StyledComponents';
+import { Product as ProductInterface } from '../../Interfaces/Product';
 interface ProductDetailParams {
     match: {
         params: {
@@ -16,22 +18,33 @@ interface ProductDetailParams {
 
 const Product = (props: ProductDetailParams) => {
     const { id } = props.match.params;
-    const actualProduct = useSelector((state: StoreState) => state.ActualProduct.data);
-    const isLoading = useSelector((state: StoreState) => state.ActualProduct.loading);
-    const status = useSelector((state: StoreState) => state.ActualProduct.status);
+    const store = useSelector((state: StoreState) => state.ProductList);
+    const actualProduct = store.data.find((product) => product._id === id);
+
+    const isLoading = useSelector((state: StoreState) => state.ProductList.loading);
+    const status = useSelector((state: StoreState) => state.ProductList.status);
 
     //product states
-    const [name, setName] = useState<string>(actualProduct.name);
-    const [description, setDescription] = useState<string>(actualProduct.description);
-    const [photo, setPhoto] = useState<string>(actualProduct.photo);
-    const [price, setPrice] = useState<number>(actualProduct.price);
-    const [active, setActive] = useState<boolean>(actualProduct.active);
+    const [name, setName] = useState<string>(actualProduct ? actualProduct.name : '');
+    const [description, setDescription] = useState<string>(actualProduct ? actualProduct.description : '');
+    const [photo, setPhoto] = useState<string>(
+        actualProduct ? actualProduct.photo : 'https://uning.es/wp-content/uploads/2016/08/ef3-placeholder-image.jpg',
+    );
+    const [price, setPrice] = useState<number>(actualProduct ? actualProduct.price : 0);
+    const [active, setActive] = useState<boolean>(actualProduct ? actualProduct.active : false);
     //domstates
     const [isEditing, setEditing] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const handleEdit = (e: React.ChangeEvent<HTMLInputElement>, setter: Dispatch<SetStateAction<string>>) => {
         setter(e.target.value);
+    };
+
+    const turnOnEditMode = () => {
+        if (actualProduct) {
+            setAllStates(actualProduct);
+            setEditing(!isEditing);
+        }
     };
 
     const handleDelete = () => {
@@ -47,7 +60,7 @@ const Product = (props: ProductDetailParams) => {
         dispatch(uploadImage(formData));
     };
 
-    const setAllStates = () => {
+    const setAllStates = (actualProduct: ProductInterface) => {
         setName(actualProduct.name);
         setDescription(actualProduct.description);
         setPrice(actualProduct.price);
@@ -70,55 +83,57 @@ const Product = (props: ProductDetailParams) => {
     };
 
     useEffect(() => {
-        dispatch(fetchProductById(id));
-    }, [isEditing]);
+        if (!actualProduct) {
+            dispatch(fetchProductById(id));
+        }
+    }, [actualProduct]);
 
     useEffect(() => {
-        setAllStates();
+        // setAllStates();
     }, [isEditing]);
 
-    if (isLoading) {
-        return <p>Loaging</p>;
-    }
-
     return (
-        <ProductPageContainer>
-            {isEditing ? (
-                <EditPhotoWrapper
-                    onChange={(event) => {
-                        handleUploadImage(event);
-                    }}
-                    type="file"
-                    name="file"
-                    id="file"
-                    height={0}
-                    photo={photo}
-                ></EditPhotoWrapper>
-            ) : (
-                <PhotoWrapper photo={actualProduct.photo}></PhotoWrapper>
-            )}
-
-            <InfoWrapper>
-                <div>
+        <>
+            {actualProduct && (
+                <ProductPageContainer>
                     {isEditing ? (
-                        <EditWrapper>
-                            <input value={name} onChange={(e) => handleEdit(e, setName)} />
-                            <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
-                            <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
-                            <button onClick={updateProduct}>Update</button>
-                        </EditWrapper>
+                        <EditPhotoWrapper
+                            onChange={(event) => {
+                                handleUploadImage(event);
+                            }}
+                            type="file"
+                            name="file"
+                            id="file"
+                            height={0}
+                            photo={photo}
+                        ></EditPhotoWrapper>
                     ) : (
-                        <>
-                            <h1>{actualProduct.name}</h1>
-                            <p>{actualProduct.description}</p>
-                            <p>{actualProduct.price} €</p>
-                        </>
+                        <PhotoWrapper photo={actualProduct.photo}></PhotoWrapper>
                     )}
-                </div>
-                <button onClick={() => setEditing(!isEditing)}>Edit</button>
-                <button onClick={handleDelete}>Delete</button>
-            </InfoWrapper>
-        </ProductPageContainer>
+
+                    <InfoWrapper>
+                        <div>
+                            {isEditing ? (
+                                <EditWrapper>
+                                    <input value={name} onChange={(e) => handleEdit(e, setName)} />
+                                    <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
+                                    <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
+                                    <button onClick={updateProduct}>Update</button>
+                                </EditWrapper>
+                            ) : (
+                                <>
+                                    <h1>{actualProduct.name}</h1>
+                                    <p>{actualProduct.description}</p>
+                                    <p>{actualProduct.price} €</p>
+                                </>
+                            )}
+                        </div>
+                        <button onClick={turnOnEditMode}>Edit</button>
+                        <button onClick={handleDelete}>Delete</button>
+                    </InfoWrapper>
+                </ProductPageContainer>
+            )}
+        </>
     );
 };
 

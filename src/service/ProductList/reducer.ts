@@ -56,13 +56,13 @@ export const ProductListReducer = (
 
             return state;
 
-        case productActionTypes.PRODUCTS_LOADING:
+        case productActionTypes.UPDATE_PRODUCT_LOADING:
             return {
                 ...state,
                 loading: true,
             };
 
-        case productActionTypes.PRODUCTS_ERROR:
+        case productActionTypes.UPDATE_PRODUCT_ERROR:
             if (action.payload) {
                 return {
                     ...state,
@@ -73,20 +73,51 @@ export const ProductListReducer = (
 
             return state;
 
-        case productActionTypes.PRODUCTS_SUCCESS:
+        case productActionTypes.UPDATE_PRODUCT_SUCCESS:
             if (action.payload) {
-                const productList = [];
-                productList.push(action.payload.data);
-                console.log(action.payload);
+                const updatedProduct = action.payload.data[0];
+                const productIndex = state.data.findIndex((element) => element._id === updatedProduct._id);
+                const stateListModified = state.data;
+                stateListModified.splice(productIndex, 1, updatedProduct);
                 return {
                     ...state,
-                    data: action.payload.data,
+                    data: stateListModified,
                     loading: false,
                     status: action.payload.status,
-                    listLength: action.payload.listLength,
+                };
+            }
+            return state;
+
+        case productActionTypes.GET_SINGLE_PRODUCT_LOADING:
+            return {
+                ...state,
+                loading: true,
+            };
+
+        case productActionTypes.GET_SINGLE_PRODUCT_ERROR:
+            if (action.payload) {
+                return {
+                    ...state,
+                    loading: false,
+                    status: action.payload.status,
                 };
             }
 
+            return state;
+
+        case productActionTypes.GET_SINGLE_PRODUCT_SUCCESS:
+            if (action.payload) {
+                const updatedProduct = action.payload.data[0];
+                const productIndex = state.data.findIndex((element) => element._id === updatedProduct._id);
+                const stateListModified = state.data;
+                stateListModified.splice(productIndex, 1, updatedProduct);
+                return {
+                    ...state,
+                    data: stateListModified,
+                    loading: false,
+                    status: action.payload.status,
+                };
+            }
             return state;
 
         default:
