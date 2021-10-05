@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct } from '../../service/ActualProduct/actions';
+import { createProduct } from '../../service/ProductList/actions';
 
 import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper } from './StyledComponents';
+import { uploadImage } from '../../helpers/uploadImage';
 
 import { StoreState } from '../../service/StoreState';
 
@@ -13,9 +14,7 @@ const New = (): JSX.Element => {
     const [photo, setPhoto] = useState<string>('/');
     const [price, setPrice] = useState<number>(0);
     const [active, setActive] = useState<boolean>(false);
-    const productImageFromStore = useSelector((state: StoreState) =>
-        state.ActualProduct.data.uploadedImg ? state.ActualProduct.data.uploadedImg : '',
-    );
+    const productList = useSelector((state: StoreState) => state.ProductList.data);
 
     //domstates
     const dispatch = useDispatch();
@@ -35,6 +34,8 @@ const New = (): JSX.Element => {
     const handleSuccess = () => {
         resetFields();
         alert('Success');
+        console.log(productList[productList.length - 1]);
+        // window.location.replace(`/product/${productList[productList.length - 1]._id}`);
     };
 
     const createNewProduct = () => {
@@ -55,17 +56,14 @@ const New = (): JSX.Element => {
 
     const handleUploadImage = async (event: any) => {
         const formData = new FormData();
-        console.log(event.target.files[0]);
         formData.append('file', event.target.files[0]);
         formData.append('upload_preset', 'dr973rmw');
-        // dispatch(uploadImage(formData));
-    };
-
-    useEffect(() => {
-        if (productImageFromStore) {
-            setPhoto(productImageFromStore);
+        const response = await uploadImage(formData);
+        if (response.status !== 200) {
+            alert(response.message);
         }
-    }, [productImageFromStore]);
+        setPhoto(response.url);
+    };
 
     return (
         <ProductPageContainer>
@@ -75,7 +73,7 @@ const New = (): JSX.Element => {
                 name="file"
                 id="file"
                 height={0}
-                photo={productImageFromStore}
+                photo={photo}
             ></PhotoWrapper>
 
             <InfoWrapper>

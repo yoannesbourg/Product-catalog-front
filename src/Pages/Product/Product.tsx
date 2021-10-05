@@ -22,7 +22,6 @@ const Product = (props: ProductDetailParams) => {
     const store = useSelector((state: StoreState) => state.ProductList);
     const actualProduct = store.data.find((product) => product._id === id);
 
-    const isLoading = useSelector((state: StoreState) => state.ProductList.loading);
     const status = useSelector((state: StoreState) => state.ProductList.status);
 
     //product states

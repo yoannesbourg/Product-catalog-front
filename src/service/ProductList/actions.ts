@@ -100,3 +100,34 @@ export const fetchProductById =
             return dispatch({ type: productActionTypes.GET_SINGLE_PRODUCT_ERROR });
         }
     };
+
+export const createProduct =
+    (newProduct: Product): ThunkAction<void, null, unknown, Action<string>> =>
+    async (dispatch) => {
+        dispatch({
+            type: productActionTypes.CREATE_PRODUCT_LOADING,
+        });
+        try {
+            const response = await AxiosConfig.post(`/products/create/`, { newProduct });
+
+            if (response.status !== 200) {
+                return dispatch({
+                    type: productActionTypes.CREATE_PRODUCT_ERROR,
+                    payload: {
+                        status: response.status,
+                    },
+                });
+            }
+            const responseWrapped: Product[] = [];
+            responseWrapped.push(response.data);
+            return dispatch({
+                type: productActionTypes.CREATE_PRODUCT_SUCESS,
+                payload: {
+                    data: responseWrapped,
+                    status: response.status,
+                },
+            });
+        } catch (error) {
+            return dispatch({ type: productActionTypes.CREATE_PRODUCT_ERROR });
+        }
+    };

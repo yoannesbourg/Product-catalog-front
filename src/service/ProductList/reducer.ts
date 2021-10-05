@@ -88,13 +88,13 @@ export const ProductListReducer = (
             }
             return state;
 
-        case productActionTypes.GET_SINGLE_PRODUCT_LOADING:
+        case productActionTypes.CREATE_PRODUCT_LOADING:
             return {
                 ...state,
                 loading: true,
             };
 
-        case productActionTypes.GET_SINGLE_PRODUCT_ERROR:
+        case productActionTypes.CREATE_PRODUCT_ERROR:
             if (action.payload) {
                 return {
                     ...state,
@@ -105,12 +105,11 @@ export const ProductListReducer = (
 
             return state;
 
-        case productActionTypes.GET_SINGLE_PRODUCT_SUCCESS:
+        case productActionTypes.CREATE_PRODUCT_SUCESS:
             if (action.payload) {
                 const updatedProduct = action.payload.data[0];
-                const productIndex = state.data.findIndex((element) => element._id === updatedProduct._id);
-                const stateListModified = state.data;
-                stateListModified.splice(productIndex, 1, updatedProduct);
+                const stateListModified: Product[] = state.data;
+                stateListModified.push(updatedProduct);
                 return {
                     ...state,
                     data: stateListModified,
