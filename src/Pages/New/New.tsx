@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct, uploadImage } from '../../service/ActualProduct/actions';
+import { createProduct } from '../../service/ActualProduct/actions';
 
 import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper } from './StyledComponents';
 
@@ -58,7 +58,7 @@ const New = (): JSX.Element => {
         console.log(event.target.files[0]);
         formData.append('file', event.target.files[0]);
         formData.append('upload_preset', 'dr973rmw');
-        dispatch(uploadImage(formData));
+        // dispatch(uploadImage(formData));
     };
 
     useEffect(() => {

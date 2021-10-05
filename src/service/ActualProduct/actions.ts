@@ -3,7 +3,6 @@ import { Action } from 'redux';
 
 import * as productActionTypes from './actionsType';
 import AxiosConfig from '../../config/axios.config';
-import axios from 'axios';
 import { Product } from '../../Interfaces/Product';
 
 export const fetchProductById =
@@ -119,34 +118,5 @@ export const deleteProduct =
             });
         } catch (error) {
             return dispatch({ type: productActionTypes.SINGLE_PRODUCT_ERROR });
-        }
-    };
-
-export const uploadImage =
-    (image: FormData): ThunkAction<void, null, unknown, Action<string>> =>
-    async (dispatch) => {
-        dispatch({
-            type: productActionTypes.UPLOAD_IMAGE_LOADING,
-        });
-        try {
-            const response = await axios.post(`https://api.cloudinary.com/v1_1/dqyszrjas/image/upload`, image);
-            if (response.status !== 200) {
-                return dispatch({
-                    type: productActionTypes.UPLOAD_IMAGE_ERROR,
-                    payload: {
-                        status: response.status,
-                    },
-                });
-            }
-
-            return dispatch({
-                type: productActionTypes.UPLOAD_IMAGE_SUCESS,
-                payload: {
-                    status: response.status,
-                    data: response.data.secure_url,
-                },
-            });
-        } catch (error) {
-            return dispatch({ type: productActionTypes.UPLOAD_IMAGE_ERROR });
         }
     };

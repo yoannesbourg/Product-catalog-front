@@ -1,7 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProduct, uploadImage } from '../../service/ActualProduct/actions';
+import { deleteProduct } from '../../service/ActualProduct/actions';
 import { updateProductById, fetchProductById } from '../../service/ProductList/actions';
+import { uploadImage } from '../../helpers/uploadImage';
 import { withRouter } from 'react-router';
 
 import { StoreState } from '../../service/StoreState';
@@ -56,8 +57,11 @@ const Product = (props: ProductDetailParams) => {
         const formData = new FormData();
         formData.append('file', event.target.files[0]);
         formData.append('upload_preset', 'dr973rmw');
-        setPhoto(URL.createObjectURL(event.target.files[0]));
-        dispatch(uploadImage(formData));
+        const response = await uploadImage(formData);
+        if (response.status !== 200) {
+            alert(response.message);
+        }
+        setPhoto(response.url);
     };
 
     const setAllStates = (actualProduct: ProductInterface) => {
@@ -69,6 +73,7 @@ const Product = (props: ProductDetailParams) => {
     };
 
     const updateProduct = () => {
+        console.log(photo);
         const updatedProduct = {
             name,
             description,
