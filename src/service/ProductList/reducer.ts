@@ -5,6 +5,7 @@ interface ReduxRootState {
     loading: boolean;
     status?: number;
     listLength: number | undefined;
+    lastCreatedProductId?: string;
 }
 
 export default interface ReduxActionInterface {
@@ -115,6 +116,38 @@ export const ProductListReducer = (
                     data: stateListModified,
                     loading: false,
                     status: action.payload.status,
+                };
+            }
+            return state;
+
+        case productActionTypes.GET_SINGLE_PRODUCT_LOADING:
+            return {
+                ...state,
+                loading: true,
+            };
+
+        case productActionTypes.GET_SINGLE_PRODUCT_ERROR:
+            if (action.payload) {
+                return {
+                    ...state,
+                    loading: false,
+                    status: action.payload.status,
+                };
+            }
+
+            return state;
+
+        case productActionTypes.GET_SINGLE_PRODUCT_SUCCESS:
+            if (action.payload && action.payload.data.length) {
+                const updatedProduct = action.payload.data[0];
+                const stateListModified: Product[] = state.data;
+                stateListModified.push(updatedProduct);
+                return {
+                    ...state,
+                    data: stateListModified,
+                    loading: false,
+                    status: action.payload.status,
+                    lastCreatedProductId: updatedProduct._id,
                 };
             }
             return state;
