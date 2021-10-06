@@ -34,8 +34,7 @@ const New = (): JSX.Element => {
     const handleSuccess = () => {
         resetFields();
         alert('Success');
-        console.log(productList[productList.length - 1]);
-        // window.location.replace(`/product/${productList[productList.length - 1]._id}`);
+        window.location.replace('/');
     };
 
     const createNewProduct = () => {
