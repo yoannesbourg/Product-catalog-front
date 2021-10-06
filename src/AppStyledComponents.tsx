@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const AppBackground = styled.div`
-    background-color: #eacfb2;
+    background-color: #ebeaef;
     min-height: 100vh;
     height: 100%;
     padding: 48px;

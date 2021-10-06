@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 body {
     margin: 0;
-    font-family: 'Playfair Display', serif;
+    font-family:  'Roboto', sans-serif;
     font-size: 16px;
 }
 
@@ -16,13 +17,22 @@ a {
 }
 
 h3 {
-    font-size: 20px;
+    /* font-size: 20px; */
     font-weight: bold;
     color: #1e1e1e;
+    margin-block-start: 6px;
+    margin-block-end: 6px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 }
 
 p {
-    color: #999999;
+    color: #909090;
+    margin-block-start: 6px;
+    margin-block-end: 6px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-size: 14px;
 }
 
 strong {

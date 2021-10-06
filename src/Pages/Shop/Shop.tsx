@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { StoreState } from '../../service/StoreState';
 
-import { ProductList, ProductInfos, H3, P, ProductWrapper } from './StyledComponents';
+import { ProductList, ProductInfos, H3, P, ProductWrapper, ProductImage, Price } from './StyledComponents';
 
 const Shop = (): JSX.Element => {
     const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
@@ -65,12 +65,13 @@ const Shop = (): JSX.Element => {
                 {ProductListStore &&
                     ProductListStore.map((product, i) => {
                         return (
-                            <Link key={i} to={`/product/${product._id}`}>
-                                <ProductWrapper photo={product.photo} notActive={!product.active}>
+                            <Link key={i + product.name} to={`/product/${product._id}`}>
+                                <ProductWrapper notActive={!product.active}>
+                                    <ProductImage photo={product.photo} />
                                     <ProductInfos>
                                         <H3>{product.name}</H3>
-                                        <p>{product.description}</p>
-                                        <P>{product.price} €</P>
+                                        <P>{product.description}</P>
+                                        <Price>${product.price}</Price>
                                     </ProductInfos>
                                 </ProductWrapper>
                             </Link>
