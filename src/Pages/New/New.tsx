@@ -55,12 +55,12 @@ const New = (): JSX.Element => {
 
     const handleUploadImage = async (event: any) => {
         const formData = new FormData();
-        formData.append('file', event.target.files[0]);
-        formData.append('upload_preset', 'dr973rmw');
+        formData.append('image', event.target.files[0]);
         const response = await uploadImage(formData);
         if (response.status !== 200) {
             alert(response.message);
         }
+        console.log('front', response);
         setPhoto(response.url);
     };
 

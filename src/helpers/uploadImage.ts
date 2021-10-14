@@ -1,19 +1,18 @@
-import axios from 'axios';
+import AxiosConfig from '../config/axios.config';
 
 export const uploadImage = async (image: FormData): Promise<{ status: number; url: string; message?: string }> => {
     try {
-        const response = await axios.post(`https://api.cloudinary.com/v1_1/dqyszrjas/image/upload`, image);
+        const response = await AxiosConfig.post(`/aws`, image);
         if (response.status !== 200) {
             return {
                 status: 400,
-                message: "Error. Couldn't upload this imgee",
+                message: "Error. Couldn't upload this image",
                 url: '',
             };
         }
-
         return {
             status: 200,
-            url: response.data.secure_url,
+            url: response.data.Location,
         };
     } catch (error) {
         console.log('error: ', error);
