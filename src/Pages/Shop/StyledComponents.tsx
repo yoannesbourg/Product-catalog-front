@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const ProductList = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    margin: 48px 0;
+    justify-content: space-between;
+    margin: 48px auto;
+    width: 450px;
 `;
 
 export const ProductInfos = styled.div`
@@ -44,16 +45,28 @@ export const ProductImage = styled.div`
     height: 225px;
 `;
 
+interface ProduWrapperProps {
+    notActive: boolean;
+    leftColumn: boolean;
+}
+
 export const ProductWrapper = styled.div`
     position: relative;
     background-color: white;
-    // padding: 16px;
-    margin-bottom: 48px;
+    margin-top: ${(props: ProduWrapperProps) => (props.leftColumn ? '56px' : '0')};
+    margin-bottom: 16px;
     box-shadow: 1px 3px 48px #9999998a;
     margin-right: 24px;
     margin-left: 24px;
-    opacity: ${(props: { notActive: boolean }) => (props.notActive ? '0.5' : '1')};
+    opacity: ${(props: ProduWrapperProps) => (props.notActive ? '0.5' : '1')};
     border-radius: 28px;
     overflow: hidden;
     width: 100%;
+`;
+
+export const ResultsCount = styled.h3`
+    // font-size: 48px;
+    // margin-bottom: 0;
+    // text-align: center;
+    height: fit-content;
 `;
