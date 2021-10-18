@@ -14,6 +14,8 @@ import {
     ProductImage,
     Price,
     ResultsCount,
+    Row,
+    Heart,
 } from './StyledComponents';
 
 const Shop = (): JSX.Element => {
@@ -71,17 +73,20 @@ const Shop = (): JSX.Element => {
                 })}
             </select>
             <ProductList>
-                <ResultsCount>Found 10 Results</ResultsCount>
+                {/* <ResultsCount>Found 10 Results</ResultsCount> */}
                 {ProductListStore &&
                     ProductListStore.map((product, i) => {
                         return (
                             <Link key={i + product.name} to={`/product/${product._id}`}>
-                                <ProductWrapper notActive={!product.active} leftColumn={i % 2 == 0}>
+                                <ProductWrapper notActive={!product.active} leftColumn={false}>
                                     <ProductImage photo={product.photo} />
                                     <ProductInfos>
                                         <H3>{product.name}</H3>
                                         <P>{product.description}</P>
-                                        <Price>${product.price}</Price>
+                                        <Row>
+                                            <Price>${product.price}</Price>
+                                            <Heart />
+                                        </Row>
                                     </ProductInfos>
                                 </ProductWrapper>
                             </Link>

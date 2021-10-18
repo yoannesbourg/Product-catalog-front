@@ -4,7 +4,7 @@ export const AppBackground = styled.div`
     background-color: #ebeaef;
     min-height: 100vh;
     height: 100%;
-    padding: 48px;
+    width: 100%;
 `;
 
 export const AppContainer = styled.div`
