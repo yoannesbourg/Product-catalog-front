@@ -16,13 +16,16 @@ import {
     ResultsCount,
     Row,
     Heart,
+    FilterRow,
 } from './StyledComponents';
+import Searchbar from '../../components/Searchbar/Searchbar';
+import Filters from '../../components/Filters/Filters';
 
 const Shop = (): JSX.Element => {
+    const [isFilterOpenState, setIsFilterOpen] = useState<boolean>(false);
     const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
     const ProductListLength = useSelector((state: StoreState) => state.ProductList.listLength);
     const dispatch = useDispatch();
-    useMemo;
     const _filterValues = useMemo(() => {
         return {
             all: 'all',
@@ -65,13 +68,23 @@ const Shop = (): JSX.Element => {
         }
     };
 
+    const handleSearch = (value: string) => {
+        // setLfilters((prevFilters) => ({
+        //     ...prevFilters,
+        //     search: value.toLowerCase(),
+        // }));
+    };
+
     return (
         <>
-            <select onChange={handleFilter}>
-                {Object.entries(_filterOptions).map((option, i) => {
-                    return <option key={i + option[option.length - 1]}>{option[option.length - 1]}</option>;
-                })}
-            </select>
+            <FilterRow>
+                <Searchbar handleSearch={handleSearch} isFilterOpen={isFilterOpenState} />
+                <Filters
+                    onClick={() => setIsFilterOpen(!isFilterOpenState)}
+                    isFilterOpen={isFilterOpenState}
+                    handleDropdownChange={handleFilter}
+                />
+            </FilterRow>
             <ProductList>
                 {/* <ResultsCount>Found 10 Results</ResultsCount> */}
                 {ProductListStore &&

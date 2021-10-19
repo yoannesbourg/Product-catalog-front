@@ -63,6 +63,13 @@ export const Row = styled.div`
     justify-content: space-between;
 `;
 
+export const FilterRow = styled(Row)`
+    // background-color: black;
+    max-width: 1100px;
+    padding: 0 20%;
+    justify-content: flex-end;
+`;
+
 export const Heart = styled(HeartCircle)`
     width: 40px;
 `;
