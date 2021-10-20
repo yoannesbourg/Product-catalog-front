@@ -8,13 +8,13 @@ import { Product } from '../../Interfaces/Product';
 import { UpdatedProductServerResponse } from '../../Interfaces/UpdatedProductServerResponse';
 
 export const fetchAllProducts =
-    (page: number, filter: string, limit: number): ThunkAction<void, null, unknown, Action<string>> =>
+    (page: number, filter: string, limit: number, search: string): ThunkAction<void, null, unknown, Action<string>> =>
     async (dispatch) => {
         dispatch({
             type: productActionTypes.PRODUCTS_LOADING,
         });
         try {
-            const response = await AxiosConfig.get(`/products/${page}/${filter}/${limit}`);
+            const response = await AxiosConfig.get(`/products/${page}/${filter}/${limit}/${search}`);
             if (response.status !== 200) {
                 return dispatch({
                     type: productActionTypes.PRODUCTS_ERROR,

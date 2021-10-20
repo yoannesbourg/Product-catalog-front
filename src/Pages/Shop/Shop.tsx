@@ -43,10 +43,12 @@ const Shop = (): JSX.Element => {
     const _limit = 12;
     const [page, setPage] = useState<number>(0);
     const [filter, setFilter] = useState<string>(_filterValues.all);
-    const shouldDisplayNextButton = ProductListLength - (page + 1) * _limit > 0;
+    const [search, setSearch] = useState<string>('none');
+    const shouldDisplayNextButton: boolean = ProductListLength - (page + 1) * _limit > 0;
+    console.log(shouldDisplayNextButton, ProductListLength - (page + 1) * _limit);
     useEffect(() => {
-        dispatch(fetchAllProducts(page, filter, _limit));
-    }, [filter, page]);
+        dispatch(fetchAllProducts(page, filter, _limit, search));
+    }, [filter, page, search]);
     const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const filterValue = e.target.value;
 
@@ -69,10 +71,11 @@ const Shop = (): JSX.Element => {
     };
 
     const handleSearch = (value: string) => {
-        // setLfilters((prevFilters) => ({
-        //     ...prevFilters,
-        //     search: value.toLowerCase(),
-        // }));
+        if (!value) {
+            setSearch('none');
+        } else {
+            setSearch(value);
+        }
     };
 
     return (
@@ -85,9 +88,10 @@ const Shop = (): JSX.Element => {
                     handleDropdownChange={handleFilter}
                 />
             </FilterRow>
+            {search.length > 0 && <ResultsCount>Found {ProductListLength} Results</ResultsCount>}
+
             <ProductList>
-                {/* <ResultsCount>Found 10 Results</ResultsCount> */}
-                {ProductListStore &&
+                {ProductListStore.length > 0 ? (
                     ProductListStore.map((product, i) => {
                         return (
                             <Link key={i + product.name} to={`/product/${product._id}`}>
@@ -104,7 +108,10 @@ const Shop = (): JSX.Element => {
                                 </ProductWrapper>
                             </Link>
                         );
-                    })}
+                    })
+                ) : (
+                    <P>No products found</P>
+                )}
             </ProductList>
             {page !== 0 && <button onClick={() => setPage(page - 1)}>Prev</button>}
             {shouldDisplayNextButton && <button onClick={() => setPage(page + 1)}>Next</button>}

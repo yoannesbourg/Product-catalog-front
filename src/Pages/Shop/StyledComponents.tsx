@@ -56,6 +56,7 @@ export const ProductImage = styled.div`
 
 export const ResultsCount = styled.h3`
     height: fit-content;
+    margin-top: 16px;
 `;
 
 export const Row = styled.div`
