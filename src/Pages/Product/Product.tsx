@@ -7,7 +7,17 @@ import { withRouter } from 'react-router';
 
 import { StoreState } from '../../service/StoreState';
 
-import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper, EditPhotoWrapper } from './StyledComponents';
+import {
+    ProductPageContainer,
+    InfoWrapper,
+    EditWrapper,
+    PhotoWrapper,
+    EditPhotoWrapper,
+    Price,
+    TitleInput,
+    ValueInput,
+    PriceInput,
+} from './StyledComponents';
 import { Product as ProductInterface } from '../../Interfaces/Product';
 interface ProductDetailParams {
     match: {
@@ -118,16 +128,16 @@ const Product = (props: ProductDetailParams) => {
                         <div>
                             {isEditing ? (
                                 <EditWrapper>
-                                    <input value={name} onChange={(e) => handleEdit(e, setName)} />
-                                    <input value={description} onChange={(e) => handleEdit(e, setDescription)} />
-                                    <input value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
+                                    <TitleInput value={name} onChange={(e) => handleEdit(e, setName)} />
+                                    <ValueInput value={description} onChange={(e) => handleEdit(e, setDescription)} />
+                                    <PriceInput value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
                                     <button onClick={updateProduct}>Update</button>
                                 </EditWrapper>
                             ) : (
                                 <>
-                                    <h1>{actualProduct.name}</h1>
+                                    <h3>{actualProduct.name}</h3>
                                     <p>{actualProduct.description}</p>
-                                    <p>{actualProduct.price} €</p>
+                                    <Price>${actualProduct.price}</Price>
                                 </>
                             )}
                         </div>

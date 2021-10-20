@@ -66,7 +66,7 @@ export const Row = styled.div`
 export const FilterRow = styled(Row)`
     // background-color: black;
     max-width: 1100px;
-    padding: 0 20%;
+    padding: 48px 20% 0 20%;
     justify-content: flex-end;
 `;
 

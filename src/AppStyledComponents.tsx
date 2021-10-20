@@ -8,10 +8,13 @@ export const AppBackground = styled.div`
 `;
 
 export const AppContainer = styled.div`
-    width: 80%;
+    width: 50%;
     margin: 0 auto;
-    padding: 48px 0;
+    // padding: 48px 0;
     text-align: center;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 export const NavBar = styled.div`

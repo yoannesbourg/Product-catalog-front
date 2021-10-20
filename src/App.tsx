@@ -11,10 +11,10 @@ const App = (): JSX.Element => {
     return (
         <Router>
             <AppBackground>
-                <NavBar>
+                {/* <NavBar>
                     <Link to="/">Shop</Link>
                     <Link to="/new">New Product</Link>
-                </NavBar>
+                </NavBar> */}
 
                 <AppContainer>
                     <Switch>
