@@ -88,7 +88,7 @@ const Shop = (): JSX.Element => {
                     handleDropdownChange={handleFilter}
                 />
             </FilterRow>
-            {search.length > 0 && <ResultsCount>Found {ProductListLength} Results</ResultsCount>}
+            {search.length > 0 && search !== 'none' && <ResultsCount>Found {ProductListLength} Results</ResultsCount>}
 
             <ProductList>
                 {ProductListStore.length > 0 ? (

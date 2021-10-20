@@ -21,7 +21,6 @@ export const ProductWrapper = styled.div`
     margin-bottom: 24px;
     box-shadow: 1px 3px 48px #9999998a;
     margin-right: 24px;
-    // margin-left: 24px;
     opacity: ${(props: ProductWrapperProps) => (props.notActive ? '0.5' : '1')};
     border-radius: 28px;
     overflow: hidden;
@@ -56,7 +55,7 @@ export const ProductImage = styled.div`
 
 export const ResultsCount = styled.h3`
     height: fit-content;
-    margin-top: 16px;
+    margin-top: 48px;
 `;
 
 export const Row = styled.div`
