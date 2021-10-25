@@ -131,3 +131,32 @@ export const createProduct =
             return dispatch({ type: productActionTypes.CREATE_PRODUCT_ERROR });
         }
     };
+
+export const deleteProduct =
+    (id: string): ThunkAction<void, null, unknown, Action<string>> =>
+    async (dispatch) => {
+        dispatch({
+            type: productActionTypes.DELETE_PRODUCT_LOADING,
+        });
+        try {
+            const response = await AxiosConfig.delete(`/products/delete/${id}`);
+
+            if (response.status !== 200) {
+                return dispatch({
+                    type: productActionTypes.DELETE_PRODUCT_ERROR,
+                    payload: {
+                        status: response.status,
+                    },
+                });
+            }
+            return dispatch({
+                type: productActionTypes.DELETE_PRODUCT_SUCESS,
+                payload: {
+                    data: response.data,
+                    status: response.status,
+                },
+            });
+        } catch (error) {
+            return dispatch({ type: productActionTypes.DELETE_PRODUCT_ERROR });
+        }
+    };

@@ -1,7 +1,7 @@
 import { Product } from '../Interfaces/Product';
 export interface StoreState {
     ProductList: ProductListReducer;
-    ActualProduct: ActualProduct;
+    DeleteHandler: DeleteHandler;
 }
 
 export interface ProductListReducer {
@@ -13,6 +13,11 @@ export interface ProductListReducer {
 
 export interface ActualProduct {
     data: Product;
+    loading: boolean;
+    status?: number;
+}
+
+export interface DeleteHandler {
     loading: boolean;
     status?: number;
 }

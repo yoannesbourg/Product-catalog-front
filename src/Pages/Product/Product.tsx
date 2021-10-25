@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProduct } from '../../service/ActualProduct/actions';
-import { updateProductById, fetchProductById } from '../../service/ProductList/actions';
+import { deleteProduct } from '../../service/DeleteHandler/actions';
+import { updateProductById } from '../../service/ProductList/actions';
 import { uploadImage } from '../../helpers/uploadImage';
 import { withRouter } from 'react-router';
 
@@ -29,6 +29,7 @@ interface ProductDetailParams {
 const Product = (props: ProductDetailParams) => {
     const { id } = props.match.params;
     const store = useSelector((state: StoreState) => state.ProductList);
+    const DeleteHandlerStatus = useSelector((state: StoreState) => state.DeleteHandler.status);
     const actualProduct = store.data.find((product) => product._id === id);
 
     const status = useSelector((state: StoreState) => state.ProductList.status);
@@ -58,7 +59,6 @@ const Product = (props: ProductDetailParams) => {
 
     const handleDelete = () => {
         dispatch(deleteProduct(id));
-        window.location.replace('/');
     };
 
     const handleUploadImage = async (event: any) => {
@@ -80,7 +80,6 @@ const Product = (props: ProductDetailParams) => {
     };
 
     const updateProduct = () => {
-        console.log(photo);
         const updatedProduct = {
             name,
             description,
@@ -95,14 +94,13 @@ const Product = (props: ProductDetailParams) => {
     };
 
     useEffect(() => {
-        if (!actualProduct) {
-            dispatch(fetchProductById(id));
+        if (DeleteHandlerStatus && DeleteHandlerStatus !== 200) {
+            alert('Error while deleting');
+        } else if (DeleteHandlerStatus && DeleteHandlerStatus === 200) {
+            alert('Product was deleted');
+            window.location.replace('/');
         }
-    }, [actualProduct]);
-
-    useEffect(() => {
-        // setAllStates();
-    }, [isEditing]);
+    }, [DeleteHandlerStatus]);
 
     return (
         <>
