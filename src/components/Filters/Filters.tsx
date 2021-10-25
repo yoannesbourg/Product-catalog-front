@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import FilterIcon from '../../Icons/filter.svg';
 import { Wrapper, Filter, Select, ArrowBack, Row } from './StyledComponents';
