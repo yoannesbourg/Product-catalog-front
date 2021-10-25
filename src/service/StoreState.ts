@@ -2,6 +2,7 @@ import { Product } from '../Interfaces/Product';
 export interface StoreState {
     ProductList: ProductListReducer;
     DeleteHandler: DeleteHandler;
+    UploadImageHandler: UploadImageHandler;
 }
 
 export interface ProductListReducer {
@@ -11,13 +12,13 @@ export interface ProductListReducer {
     listLength: number;
 }
 
-export interface ActualProduct {
-    data: Product;
+export interface DeleteHandler {
     loading: boolean;
     status?: number;
 }
 
-export interface DeleteHandler {
+export interface UploadImageHandler {
     loading: boolean;
     status?: number;
+    data?: string;
 }

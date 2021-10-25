@@ -1,9 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../../service/ProductList/actions';
+import { uploadImage } from '../../service/UploadImageHandler/actions';
 
 import { ProductPageContainer, InfoWrapper, EditWrapper, PhotoWrapper } from './StyledComponents';
-import { uploadImage } from '../../helpers/uploadImage';
+import { Loader, LoaderWrapper } from '../../components/Loader/Loader';
 
 import { StoreState } from '../../service/StoreState';
 
@@ -14,7 +15,11 @@ const New = (): JSX.Element => {
     const [photo, setPhoto] = useState<string>('/');
     const [price, setPrice] = useState<number>(0);
     const [active, setActive] = useState<boolean>(false);
-    const productList = useSelector((state: StoreState) => state.ProductList.data);
+
+    //upload handler
+    const UploadImageHandlerResponse = useSelector((state: StoreState) => state.UploadImageHandler.data);
+    const isUploadImageLoading = useSelector((state: StoreState) => state.UploadImageHandler.loading);
+    const UploadImageHandlerStatus = useSelector((state: StoreState) => state.UploadImageHandler.status);
 
     //domstates
     const dispatch = useDispatch();
@@ -54,26 +59,33 @@ const New = (): JSX.Element => {
     };
 
     const handleUploadImage = async (event: any) => {
-        const formData = new FormData();
-        formData.append('image', event.target.files[0]);
-        const response = await uploadImage(formData);
-        if (response.status !== 200) {
-            alert(response.message);
-        }
-        console.log('front', response);
-        setPhoto(response.url);
+        dispatch(uploadImage(event));
     };
+
+    useEffect(() => {
+        if (UploadImageHandlerResponse) {
+            setPhoto(UploadImageHandlerResponse);
+        } else if (UploadImageHandlerStatus && UploadImageHandlerStatus !== 200) {
+            alert('error');
+        }
+    }, [UploadImageHandlerResponse]);
 
     return (
         <ProductPageContainer>
-            <PhotoWrapper
-                onChange={(event) => handleUploadImage(event)}
-                type="file"
-                name="file"
-                id="file"
-                height={0}
-                photo={photo}
-            ></PhotoWrapper>
+            {isUploadImageLoading ? (
+                <LoaderWrapper>
+                    <Loader width={30} />
+                </LoaderWrapper>
+            ) : (
+                <PhotoWrapper
+                    onChange={(event) => handleUploadImage(event)}
+                    type="file"
+                    name="file"
+                    id="file"
+                    height={0}
+                    photo={photo}
+                ></PhotoWrapper>
+            )}
 
             <InfoWrapper>
                 <EditWrapper>

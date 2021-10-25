@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteProduct } from '../../service/DeleteHandler/actions';
-import { updateProductById } from '../../service/ProductList/actions';
-import { uploadImage } from '../../helpers/uploadImage';
+import { updateProductById, fetchProductById } from '../../service/ProductList/actions';
+import { uploadImage } from '../../service/UploadImageHandler/actions';
 import { withRouter } from 'react-router';
 
 import { StoreState } from '../../service/StoreState';
@@ -17,6 +17,7 @@ import {
     ValueInput,
     PriceInput,
 } from './StyledComponents';
+import { Loader, LoaderWrapper } from '../../components/Loader/Loader';
 import { Product as ProductInterface } from '../../Interfaces/Product';
 interface ProductDetailParams {
     match: {
@@ -30,6 +31,11 @@ const Product = (props: ProductDetailParams) => {
     const { id } = props.match.params;
     const store = useSelector((state: StoreState) => state.ProductList);
     const DeleteHandlerStatus = useSelector((state: StoreState) => state.DeleteHandler.status);
+    //upload handler
+    const UploadImageHandlerResponse = useSelector((state: StoreState) => state.UploadImageHandler.data);
+    const isUploadImageLoading = useSelector((state: StoreState) => state.UploadImageHandler.loading);
+    const UploadImageHandlerStatus = useSelector((state: StoreState) => state.UploadImageHandler.status);
+
     const actualProduct = store.data.find((product) => product._id === id);
 
     const status = useSelector((state: StoreState) => state.ProductList.status);
@@ -62,13 +68,7 @@ const Product = (props: ProductDetailParams) => {
     };
 
     const handleUploadImage = async (event: any) => {
-        const formData = new FormData();
-        formData.append('image', event.target.files[0]);
-        const response = await uploadImage(formData);
-        if (response.status !== 200) {
-            alert(response.message);
-        }
-        setPhoto(response.url);
+        dispatch(uploadImage(event));
     };
 
     const setAllStates = (actualProduct: ProductInterface) => {
@@ -102,21 +102,43 @@ const Product = (props: ProductDetailParams) => {
         }
     }, [DeleteHandlerStatus]);
 
+    useEffect(() => {
+        if (UploadImageHandlerResponse) {
+            setPhoto(UploadImageHandlerResponse);
+        } else if (UploadImageHandlerStatus && UploadImageHandlerStatus !== 200) {
+            alert('error');
+        }
+    }, [UploadImageHandlerResponse]);
+
+    useEffect(() => {
+        if (!actualProduct) {
+            dispatch(fetchProductById(id));
+        }
+    }, [actualProduct]);
+
     return (
         <>
             {actualProduct && (
                 <ProductPageContainer>
                     {isEditing ? (
-                        <EditPhotoWrapper
-                            onChange={(event) => {
-                                handleUploadImage(event);
-                            }}
-                            type="file"
-                            name="file"
-                            id="file"
-                            height={0}
-                            photo={photo}
-                        ></EditPhotoWrapper>
+                        <>
+                            {isUploadImageLoading ? (
+                                <LoaderWrapper>
+                                    <Loader width={30} />
+                                </LoaderWrapper>
+                            ) : (
+                                <EditPhotoWrapper
+                                    onChange={(event) => {
+                                        handleUploadImage(event);
+                                    }}
+                                    type="file"
+                                    name="file"
+                                    id="file"
+                                    height={0}
+                                    photo={photo}
+                                ></EditPhotoWrapper>
+                            )}
+                        </>
                     ) : (
                         <PhotoWrapper photo={actualProduct.photo}></PhotoWrapper>
                     )}

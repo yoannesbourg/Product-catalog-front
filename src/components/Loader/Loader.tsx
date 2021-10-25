@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { LoaderAlt } from '@styled-icons/boxicons-regular/LoaderAlt';
 
 export const Loader = styled(LoaderAlt)`
-    width: 20px;
+    width: ${(props: { width?: number }) => (props.width ? props.width + 'px' : '20px')};
     animation: spin 0.8s linear infinite;
     margin: 48px auto;
     @-moz-keyframes spin {
@@ -21,4 +21,12 @@ export const Loader = styled(LoaderAlt)`
             transform: rotate(360deg);
         }
     }
+`;
+
+export const LoaderWrapper = styled.div`
+    height: 50vh;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
 `;
