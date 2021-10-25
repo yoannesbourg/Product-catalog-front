@@ -3,7 +3,13 @@ import styled from 'styled-components';
 export const ProductPageContainer = styled.div`
     display: flex;
     justify-content: center;
-    height: 100%;
+    height: 100vh;
+    flex-direction: column;
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
+    align-items: center;
+    overflow-x: hidden;
 `;
 
 export const InfoWrapper = styled.div`
@@ -50,6 +56,7 @@ export const PhotoWrapper = styled.input`
     background-size: cover;
     background-repeat: no-repeat;
     background-color: white;
+    border: 1px solid #9999998a;
     width: 50%;
     height: 50vh;
     border-radius: 24px;

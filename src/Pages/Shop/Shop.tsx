@@ -15,9 +15,12 @@ import {
     Price,
     ResultsCount,
     Row,
-    Heart,
     FilterRow,
+    Button,
+    NextIcon,
+    PrevIcon,
 } from './StyledComponents';
+import { Loader } from '../../components/Loader/Loader';
 import Searchbar from '../../components/Searchbar/Searchbar';
 import Filters from '../../components/Filters/Filters';
 
@@ -25,6 +28,7 @@ const Shop = (): JSX.Element => {
     const [isFilterOpenState, setIsFilterOpen] = useState<boolean>(false);
     const ProductListStore = useSelector((state: StoreState) => state.ProductList.data);
     const ProductListLength = useSelector((state: StoreState) => state.ProductList.listLength);
+    const isLoading = useSelector((state: StoreState) => state.ProductList.loading);
     const dispatch = useDispatch();
     const _filterValues = useMemo(() => {
         return {
@@ -40,12 +44,16 @@ const Shop = (): JSX.Element => {
             notActive: 'Not active',
         };
     }, []);
+    const _searchOptions = useMemo(() => {
+        return {
+            none: 'none',
+        };
+    }, []);
     const _limit = 12;
     const [page, setPage] = useState<number>(0);
     const [filter, setFilter] = useState<string>(_filterValues.all);
-    const [search, setSearch] = useState<string>('none');
+    const [search, setSearch] = useState<string>(_searchOptions.none);
     const shouldDisplayNextButton: boolean = ProductListLength - (page + 1) * _limit > 0;
-    console.log(shouldDisplayNextButton, ProductListLength - (page + 1) * _limit);
     useEffect(() => {
         dispatch(fetchAllProducts(page, filter, _limit, search));
     }, [filter, page, search]);
@@ -72,7 +80,7 @@ const Shop = (): JSX.Element => {
 
     const handleSearch = (value: string) => {
         if (!value) {
-            setSearch('none');
+            setSearch(_searchOptions.none);
         } else {
             setSearch(value);
         }
@@ -88,33 +96,48 @@ const Shop = (): JSX.Element => {
                     handleDropdownChange={handleFilter}
                 />
             </FilterRow>
-            {search.length > 0 && search !== 'none' && <ResultsCount>Found {ProductListLength} Results</ResultsCount>}
 
-            <ProductList>
-                {ProductListStore.length > 0 ? (
-                    ProductListStore.map((product, i) => {
-                        return (
-                            <Link key={i + product.name} to={`/product/${product._id}`}>
-                                <ProductWrapper notActive={!product.active} leftColumn={false}>
-                                    <ProductImage photo={product.photo} />
-                                    <ProductInfos>
-                                        <H3>{product.name}</H3>
-                                        <P>{product.description}</P>
-                                        <Row>
-                                            <Price>${product.price}</Price>
-                                            <Heart />
-                                        </Row>
-                                    </ProductInfos>
-                                </ProductWrapper>
-                            </Link>
-                        );
-                    })
-                ) : (
-                    <P>No products found</P>
-                )}
-            </ProductList>
-            {page !== 0 && <button onClick={() => setPage(page - 1)}>Prev</button>}
-            {shouldDisplayNextButton && <button onClick={() => setPage(page + 1)}>Next</button>}
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <>
+                    {search.length > 0 && search !== _searchOptions.none && (
+                        <ResultsCount>Found {ProductListLength} Results</ResultsCount>
+                    )}
+                    <ProductList>
+                        {ProductListStore.length > 0 ? (
+                            ProductListStore.map((product, i) => {
+                                return (
+                                    <Link key={i + product.name} to={`/product/${product._id}`}>
+                                        <ProductWrapper notActive={!product.active} leftColumn={false}>
+                                            <ProductImage photo={product.photo} />
+                                            <ProductInfos>
+                                                <H3>{product.name}</H3>
+                                                <P>{product.description}</P>
+                                                <Row>
+                                                    <Price>${product.price}</Price>
+                                                </Row>
+                                            </ProductInfos>
+                                        </ProductWrapper>
+                                    </Link>
+                                );
+                            })
+                        ) : (
+                            <P>No products found</P>
+                        )}
+                    </ProductList>
+                    {page !== 0 && (
+                        <Button onClick={() => setPage(page - 1)}>
+                            <PrevIcon />
+                        </Button>
+                    )}
+                    {shouldDisplayNextButton && (
+                        <Button onClick={() => setPage(page + 1)}>
+                            <NextIcon />
+                        </Button>
+                    )}
+                </>
+            )}
         </>
     );
 };

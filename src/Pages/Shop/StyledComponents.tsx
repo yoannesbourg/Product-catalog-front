@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 import { HeartCircle } from '@styled-icons/ionicons-sharp/HeartCircle';
+import { NavigateNext } from '@styled-icons/material-twotone/NavigateNext';
+import { NavigateBefore } from '@styled-icons/material-twotone/NavigateBefore';
+interface ProductWrapperProps {
+    notActive: boolean;
+    leftColumn: boolean;
+}
 
 export const ProductList = styled.div`
     display: flex;
@@ -9,10 +15,6 @@ export const ProductList = styled.div`
     width: 90%;
     max-width: 1100px;
 `;
-interface ProductWrapperProps {
-    notActive: boolean;
-    leftColumn: boolean;
-}
 
 export const ProductWrapper = styled.div`
     position: relative;
@@ -64,7 +66,6 @@ export const Row = styled.div`
 `;
 
 export const FilterRow = styled(Row)`
-    // background-color: black;
     max-width: 1100px;
     padding: 48px 20% 0 20%;
     justify-content: flex-end;
@@ -72,4 +73,21 @@ export const FilterRow = styled(Row)`
 
 export const Heart = styled(HeartCircle)`
     width: 40px;
+`;
+
+export const Button = styled.button`
+    margin-bottom: 48px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    &:hover {
+        opacity: 0.5;
+    }
+`;
+
+export const NextIcon = styled(NavigateNext)`
+    width: 24px;
+`;
+
+export const PrevIcon = styled(NavigateBefore)`
+    width: 24px;
 `;

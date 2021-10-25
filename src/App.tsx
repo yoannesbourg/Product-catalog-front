@@ -5,16 +5,20 @@ import Shop from './Pages/Shop/Shop';
 import Product from './Pages/Product/Product';
 import New from './Pages/New/New';
 
-import { AppBackground, AppContainer, NavBar } from './AppStyledComponents';
+import { AppBackground, AppContainer, NavBar, ShopIcon, AddIcon } from './AppStyledComponents';
 
 const App = (): JSX.Element => {
     return (
         <Router>
             <AppBackground>
-                {/* <NavBar>
-                    <Link to="/">Shop</Link>
-                    <Link to="/new">New Product</Link>
-                </NavBar> */}
+                <NavBar>
+                    <Link to="/">
+                        <ShopIcon />
+                    </Link>
+                    <Link to="/new">
+                        <AddIcon />
+                    </Link>
+                </NavBar>
 
                 <AppContainer>
                     <Switch>

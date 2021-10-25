@@ -10,7 +10,6 @@ import { StoreState } from '../../service/StoreState';
 import {
     ProductPageContainer,
     InfoWrapper,
-    EditWrapper,
     PhotoWrapper,
     EditPhotoWrapper,
     Price,
@@ -127,12 +126,12 @@ const Product = (props: ProductDetailParams) => {
                     <InfoWrapper>
                         <div>
                             {isEditing ? (
-                                <EditWrapper>
+                                <>
                                     <TitleInput value={name} onChange={(e) => handleEdit(e, setName)} />
                                     <ValueInput value={description} onChange={(e) => handleEdit(e, setDescription)} />
                                     <PriceInput value={price} onChange={(e) => setPrice(parseInt(e.target.value))} />
                                     <button onClick={updateProduct}>Update</button>
-                                </EditWrapper>
+                                </>
                             ) : (
                                 <>
                                     <h3>{actualProduct.name}</h3>
